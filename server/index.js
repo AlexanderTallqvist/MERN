@@ -17,6 +17,10 @@ passport.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.send("HELLO WORLD!");
+});
+
 // Port setup
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, console.log("SERVER UP ON PORT: " + PORT));
