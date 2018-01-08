@@ -12,14 +12,21 @@ passport.use(
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
     callbackURL: "/auth/google/callback"
-  }, (accessToken) => {
-    console.log(accessToken);
+  }, (accessToken, refreshToken, profile, done) => {
+    console.log('access token: ', accessToken);
+    console.log('refresh: ', refreshToken);
+    console.log('profile: ', profile);
   })
 );
 
-app.get("/", (req, res) => {
-  res.send("HELLO WORLD!");
-});
+// Call our strategy when a user visits a sertain URL
+app.get("/auth/google", passport.authenticate('google', {
+  scope: ['profile', 'email']
+  })
+);
+
+// Our google auth callback URL (passport will exchange googles code for the users profile)
+app.get("/auth/google/callback", passport.authenticate('google'));
 
 // Port setup
 const PORT = process.env.PORT || 5000;
